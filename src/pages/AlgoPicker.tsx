@@ -1,13 +1,36 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { DocumentTextIcon } from "@heroicons/react/24/outline";
 
 const AlgoPicker = () => {
+    const location = useLocation();
+    const navigate = useNavigate();
     const [selectedAlgorithm, setSelectedAlgorithm] = useState("");
+    const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+
+    useEffect(() => {
+        const state = location.state as { file?: File };
+        if (state?.file) {
+            setUploadedFile(state.file);
+        } else {
+            // Redirect back to home if no file is present
+            navigate("/");
+        }
+    }, [location, navigate]);
 
     const algorithms = [
         "Random Forest",
         "Linear Regression",
         "Decision Tree",
     ];
+
+    const formatFileSize = (bytes: number): string => {
+        if (bytes === 0) return '0 Bytes';
+        const k = 1024;
+        const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i];
+    };
 
     return (
         <div className="flex flex-row min-h-screen p-8 gap-8">
@@ -39,8 +62,19 @@ const AlgoPicker = () => {
             </div>
             <div className="flex flex-col w-1/2 justify-center items-center">
                 <div className="border-2 border-dashed border-gray-300 rounded-lg p-12 w-200 h-100 flex flex-col items-center justify-center text-center bg-white">
-                    <p className="text-gray-600 text-lg font-semibold mb-2">Uploaded File</p>
-                    <p className="text-gray-400 text-sm">No file uploaded yet</p>
+                    {uploadedFile ? (
+                        <>
+                            <DocumentTextIcon className="h-16 w-16 text-indigo-500 mb-4" />
+                            <p className="text-gray-600 text-lg font-semibold mb-2">Uploaded File</p>
+                            <p className="text-indigo-600 font-medium text-base mb-1">{uploadedFile.name}</p>
+                            <p className="text-gray-400 text-sm">{formatFileSize(uploadedFile.size)}</p>
+                        </>
+                    ) : (
+                        <>
+                            <p className="text-gray-600 text-lg font-semibold mb-2">Uploaded File</p>
+                            <p className="text-gray-400 text-sm">No file uploaded yet</p>
+                        </>
+                    )}
                 </div>
             </div>
         </div>
