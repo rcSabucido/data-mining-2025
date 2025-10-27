@@ -1,11 +1,18 @@
+import { BrowserRouter, Routes, Route } from "react-router-dom"
+import Home from "./pages/Home"
+import AlgoPicker from "./pages/AlgoPicker"
+import ResultView from "./pages/ResultView"
+
 function App() {
 
   return (
-    <>
-      <div className="text-3xl font-bold underline text-blue-600">
-        Hello world!
-      </div>
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path = "/" element={<Home />} />
+        <Route path = "/algo-picker" element={<AlgoPicker />} />
+        <Route path = "/result-view" element={<ResultView />} />
+      </Routes>
+    </BrowserRouter>
   )
 }
 
