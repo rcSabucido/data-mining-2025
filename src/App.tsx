@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import Home from "./pages/Home"
 import AlgoPicker from "./pages/AlgoPicker"
+import ResultView from "./pages/ResultView"
 
 function App() {
 
@@ -9,6 +10,7 @@ function App() {
       <Routes>
         <Route path = "/" element={<Home />} />
         <Route path = "/algo-picker" element={<AlgoPicker />} />
+        <Route path = "/result-view" element={<ResultView />} />
       </Routes>
     </BrowserRouter>
   )
