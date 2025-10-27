@@ -32,6 +32,17 @@ const AlgoPicker = () => {
         return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i];
     };
 
+    const handleProceed = () => {
+        if (selectedAlgorithm && uploadedFile) {
+            navigate("/result-view", {
+                state: {
+                    algorithm: selectedAlgorithm,
+                    file: uploadedFile,
+                },
+            });
+        }
+    }
+
     return (
         <div className="flex flex-row min-h-screen p-8 gap-8">
             <div className="flex flex-col w-1/2 justify-center items-center">
@@ -49,6 +60,7 @@ const AlgoPicker = () => {
                         ))}
                     </select>
                     <button
+                        onClick={handleProceed}
                         disabled={!selectedAlgorithm}
                         className={`block w-full py-7 rounded-lg transition-colors text-center font-semibold ${
                             selectedAlgorithm

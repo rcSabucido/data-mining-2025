@@ -1,6 +1,29 @@
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+
 const ResultView = () => {
-    const algorithmUsed = "Random Forest"; // connect dropdown selection from AlgoPicker
+    const location = useLocation();
+    const navigate = useNavigate();
+    const [algorithmUsed, setAlgorithmUsed] = useState<string>("");
+    const [uploadedFile, setUploadedFile] = useState<File | null>(null);
     const resultContent = "Sample result content here..."; // place actual result value
+
+    useEffect(() => {
+        const state = location.state as { algorithm?: string; file?: File };
+        if (state?.algorithm && state?.file) {
+            setAlgorithmUsed(state.algorithm);
+            setUploadedFile(state.file);
+        } else {
+            // Redirect back to home if no data is present
+            navigate("/");
+        }
+    }, [location, navigate]);
+
+    const handleBack = () => {
+        navigate("/algo-picker", {
+            state: { file: uploadedFile }
+        });
+    };
 
     return (
         <div className="flex flex-col min-h-screen p-8 items-center justify-center">
@@ -21,7 +44,10 @@ const ResultView = () => {
                 </div>
                 
                 <div className="flex flex-row gap-4 justify-center">
-                    <button className="bg-gray-500 text-white text-xl font-semibold px-12 py-5 rounded-lg hover:bg-gray-600 transition-colors cursor-pointer">
+                    <button 
+                        onClick={handleBack}
+                        className="bg-gray-500 text-white text-xl font-semibold px-12 py-5 rounded-lg hover:bg-gray-600 transition-colors cursor-pointer"
+                    >
                         BACK
                     </button>
                     <button className="bg-indigo-500 text-white text-xl font-semibold px-12 py-5 rounded-lg hover:bg-indigo-600 transition-colors cursor-pointer">
