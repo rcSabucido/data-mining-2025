@@ -14,8 +14,10 @@ for env_file in ('.env', '.flaskenv'):
 app = Flask(__name__)
 CORS(app)
 
-@app.route(f"/{os.getenv("DIR")}/predict/<int:region>/<int:category>")
-async def predict(region, category):
+@app.route(f"/{os.getenv("DIR")}/predict")
+async def predict():
+    region = int(request.args.get('region'))
+    category = int(request.args.get('category'))
     return jsonify({"success": predictor.process(region, category) == 0})
 
 @app.route(f"/{os.getenv("DIR")}/upload", methods=['POST'])

@@ -6,13 +6,29 @@ const ResultView = () => {
     const navigate = useNavigate();
     const [algorithmUsed, setAlgorithmUsed] = useState<string>("");
     const [uploadedFile, setUploadedFile] = useState<File | null>(null);
-    const resultContent = "Sample result content here..."; // place actual result value
+    const [url, setUrl] = useState<string>("");
+
+    const downloadFile = (fileUrl: string) => {
+      fetch(fileUrl)
+        .then((response) => response.blob())
+        .then((blob) => {
+          const url = window.URL.createObjectURL(new Blob([blob]));
+          const link = document.createElement("a");
+          link.href = url;
+          link.setAttribute("download", algorithmUsed + ".jpg");
+          document.body.appendChild(link);
+          link.click();
+          link.parentNode?.removeChild(link);
+        });
+    };
+
 
     useEffect(() => {
         const state = location.state as { algorithm?: string; file?: File };
         if (state?.algorithm && state?.file) {
             setAlgorithmUsed(state.algorithm);
             setUploadedFile(state.file);
+            setUrl(import.meta.env.VITE_PREDICTOR_STATIC + "/static/" + state.algorithm + ".jpg");
         } else {
             // Redirect back to home if no data is present
             navigate("/");
@@ -38,7 +54,11 @@ const ResultView = () => {
                 <div className="border-2 border-gray-300 rounded-lg p-12 bg-white mb-8 min-h-150 w-full">
                     <div className="bg-gray-50 p-6 rounded-lg">
                         <pre className="text-sm text-gray-800 whitespace-pre-wrap font-mono overflow-auto">
-                            {resultContent}
+                            <img
+                                src={url}
+                                alt="Result"
+                                className="w-full"
+                              />
                         </pre>
                     </div>
                 </div>
@@ -50,7 +70,7 @@ const ResultView = () => {
                     >
                         BACK
                     </button>
-                    <button className="bg-indigo-500 text-white text-xl font-semibold px-12 py-5 rounded-lg hover:bg-indigo-600 transition-colors cursor-pointer">
+                    <button onClick={() => downloadFile(url)} className="bg-indigo-500 text-white text-xl font-semibold px-12 py-5 rounded-lg hover:bg-indigo-600 transition-colors cursor-pointer">
                         DOWNLOAD RESULT
                     </button>
                 </div>

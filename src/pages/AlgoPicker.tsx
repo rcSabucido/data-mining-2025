@@ -9,6 +9,7 @@ const AlgoPicker = () => {
     const [selectedCategory, setSelectedCategory] = useState("");
     const [selectedRegion, setSelectedRegion] = useState("");
     const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+    const [error, setError] = useState<string>("");
 
     useEffect(() => {
         const state = location.state as { file?: File };
@@ -61,12 +62,11 @@ const AlgoPicker = () => {
     const handleProceed = () => {
         if (selectedAlgorithm && selectedCategory && selectedRegion && uploadedFile) {
 
-            /*
-            fetch(import.meta.env.VITE_PREDICTOR_SITE + '/predict/' + selectedRegion + '/' + selectedCategory, {
+            fetch(import.meta.env.VITE_PREDICTOR_SITE + '/predict?region=' + selectedRegion + '&category=' + selectedCategory, {
                 method: 'GET',
             }).then((res) => res.json())
                 .then((data) => {
-                    if (!data['success']) {
+                    if (data['success']) {
                         navigate("/result-view", {
                             state: {
                                 algorithm: selectedAlgorithm,
@@ -74,11 +74,10 @@ const AlgoPicker = () => {
                             },
                         });
                     } else {
-                        setError("CSV file too large!");
+                        setError("Error processing data!");
                     }
                 })
                 .catch((err) => console.error(err));
-            */
         }
     }
 
@@ -86,6 +85,9 @@ const AlgoPicker = () => {
         <div className="flex flex-row min-h-screen p-8 gap-8">
             <div className="flex flex-col w-1/2 justify-center items-center">
                 <div className="w-96">
+                    {error && (
+                        <p className="text-red-600 font-semibold text-xl mb-2">{error}</p>
+                    )}
                     <select
                         value={selectedAlgorithm}
                         onChange={(e) => setSelectedAlgorithm(e.target.value)}
