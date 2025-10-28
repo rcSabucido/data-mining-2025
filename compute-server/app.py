@@ -1,6 +1,7 @@
 from dotenv import load_dotenv
 import asyncio
 from flask import Flask, render_template, send_from_directory, jsonify, request
+from flask_cors import CORS, cross_origin
 import os
 import predictor
 import traceback
@@ -11,6 +12,7 @@ for env_file in ('.env', '.flaskenv'):
         load_dotenv(env)
 
 app = Flask(__name__)
+CORS(app)
 
 @app.route(f"/{os.getenv("DIR")}/predict/<int:region>/<int:category>")
 async def predict(region, category):

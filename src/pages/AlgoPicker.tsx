@@ -60,12 +60,25 @@ const AlgoPicker = () => {
 
     const handleProceed = () => {
         if (selectedAlgorithm && selectedCategory && selectedRegion && uploadedFile) {
-            navigate("/result-view", {
-                state: {
-                    algorithm: selectedAlgorithm,
-                    file: uploadedFile,
-                },
-            });
+
+            /*
+            fetch(import.meta.env.VITE_PREDICTOR_SITE + '/predict/' + selectedRegion + '/' + selectedCategory, {
+                method: 'GET',
+            }).then((res) => res.json())
+                .then((data) => {
+                    if (!data['success']) {
+                        navigate("/result-view", {
+                            state: {
+                                algorithm: selectedAlgorithm,
+                                file: uploadedFile,
+                            },
+                        });
+                    } else {
+                        setError("CSV file too large!");
+                    }
+                })
+                .catch((err) => console.error(err));
+            */
         }
     }
 
