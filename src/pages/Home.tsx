@@ -16,6 +16,10 @@ const Home = () => {
             setError("Only CSV files are allowed");
             return false;
         }
+        if (file.size > 70000) {
+            setError("CSV file too large!");
+            return;
+        }
         
         setError("");
         return true;

@@ -6,6 +6,8 @@ const AlgoPicker = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const [selectedAlgorithm, setSelectedAlgorithm] = useState("");
+    const [selectedCategory, setSelectedCategory] = useState("");
+    const [selectedRegion, setSelectedRegion] = useState("");
     const [uploadedFile, setUploadedFile] = useState<File | null>(null);
 
     useEffect(() => {
@@ -19,10 +21,34 @@ const AlgoPicker = () => {
     }, [location, navigate]);
 
     const algorithms = [
-        "Random Forest",
+        "Random Forest Regressor",
         "Linear Regression",
-        "Decision Tree",
+        "Gradient Boosting Regressor",
     ];
+    const category = [
+        ["Public", 1],
+        ["Private", 2],
+        ["State Colleges/Universities", 3],
+    ];
+    const regions = [
+        ["Region I - Ilocos Region", 1],
+        ["Region II - Cagayan Valley", 2],
+        ["Region III - Central Luzon", 3],
+        ["Region IV-A - CALABARZON", 4],
+        ["Region IV-B - MIMAROPA", 5],
+        ["Region V - Bicol Region", 6],
+        ["Region VI - Western Visayas", 7],
+        ["Region VII - Central Visayas", 8],
+        ["Region VIII - Eastern Visayas", 9],
+        ["Region IX - Zamboanga Peninsula", 10],
+        ["Region X - Northern Mindanao", 11],
+        ["Region XI - Davao Region", 12],
+        ["Region XII - Soccsksargen", 13],
+        ["CARAGA - CARAGA", 14],
+        ["BARMM - Bangsamoro Autonomous Region in Muslim Mindanao", 15],
+        ["CAR - Cordillera Administrative Region", 16],
+        ["NCR - National Capital Region", 17]
+    ]
 
     const formatFileSize = (bytes: number): string => {
         if (bytes === 0) return '0 Bytes';
@@ -33,7 +59,7 @@ const AlgoPicker = () => {
     };
 
     const handleProceed = () => {
-        if (selectedAlgorithm && uploadedFile) {
+        if (selectedAlgorithm && selectedCategory && selectedRegion && uploadedFile) {
             navigate("/result-view", {
                 state: {
                     algorithm: selectedAlgorithm,
@@ -50,7 +76,7 @@ const AlgoPicker = () => {
                     <select
                         value={selectedAlgorithm}
                         onChange={(e) => setSelectedAlgorithm(e.target.value)}
-                        className="w-full p-4 mb-30 border-2 border-gray-300 rounded-lg text-lg focus:outline-none focus:border-indigo-500"
+                        className="w-full p-4 mb-3 border-2 border-gray-300 rounded-lg text-lg focus:outline-none focus:border-indigo-500"
                     >
                         <option value="">Choose an algorithm...</option>
                         {algorithms.map((algo) => (
@@ -59,6 +85,33 @@ const AlgoPicker = () => {
                             </option>
                         ))}
                     </select>
+
+                    <select
+                        value={selectedRegion}
+                        onChange={(e) => setSelectedRegion(e.target.value)}
+                        className="w-full p-4 mb-3 border-2 border-gray-300 rounded-lg text-lg focus:outline-none focus:border-indigo-500"
+                    >
+                        <option value="">Choose a region...</option>
+                        {regions.map((cat) => (
+                            <option key={cat[1]} value={cat[1]}>
+                                {cat[0]}
+                            </option>
+                        ))}
+                    </select>
+
+                    <select
+                        value={selectedCategory}
+                        onChange={(e) => setSelectedCategory(e.target.value)}
+                        className="w-full p-4 mb-30 border-2 border-gray-300 rounded-lg text-lg focus:outline-none focus:border-indigo-500"
+                    >
+                        <option value="">Choose a category...</option>
+                        {category.map((cat) => (
+                            <option key={cat[1]} value={cat[1]}>
+                                {cat[0]}
+                            </option>
+                        ))}
+                    </select>
+
                     <button
                         onClick={handleProceed}
                         disabled={!selectedAlgorithm}
