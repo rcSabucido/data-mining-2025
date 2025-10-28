@@ -18,7 +18,7 @@ const Home = () => {
         }
         if (file.size > 70000) {
             setError("CSV file too large!");
-            return;
+            return false;
         }
         
         setError("");
