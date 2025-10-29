@@ -16,6 +16,10 @@ const Home = () => {
             setError("Only CSV files are allowed");
             return false;
         }
+        if (file.size > 70000) {
+            setError("CSV file too large!");
+            return false;
+        }
         
         setError("");
         return true;
@@ -60,7 +64,22 @@ const Home = () => {
     const handleUpload = () => {
         if (selectedFile) {
             console.log("Uploading:", selectedFile);
-            navigate("/algo-picker", {state: { file: selectedFile }});
+
+            let data = new FormData();
+            data.append('file', selectedFile);
+
+            fetch(import.meta.env.VITE_PREDICTOR_SITE + '/upload', {
+                method: 'POST',
+                body: data
+            }).then((res) => res.json())
+                .then((data) => {
+                    if (data['success']) {
+                        navigate("/algo-picker", {state: { file: selectedFile }});
+                    } else {
+                        setError("CSV file too large!");
+                    }
+                })
+                .catch((err) => console.error(err));
         }
     };
 
