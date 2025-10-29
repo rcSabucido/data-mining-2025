@@ -28,7 +28,6 @@ const ResultView = () => {
         if (state?.algorithm && state?.file) {
             setAlgorithmUsed(state.algorithm);
             setUploadedFile(state.file);
-            // Add ?update=[unix timestamp] to force browser to refresh image.
             setUrl(import.meta.env.VITE_PREDICTOR_STATIC + "/static/" + state.algorithm + ".jpg?update=" + Date.now());
         } else {
             // Redirect back to home if no data is present
