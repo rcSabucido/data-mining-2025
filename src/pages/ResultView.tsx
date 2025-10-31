@@ -28,7 +28,7 @@ const ResultView = () => {
         if (state?.algorithm && state?.file) {
             setAlgorithmUsed(state.algorithm);
             setUploadedFile(state.file);
-            setUrl(import.meta.env.VITE_PREDICTOR_STATIC + "/static/" + state.algorithm + ".jpg");
+            setUrl(import.meta.env.VITE_PREDICTOR_STATIC + "/static/" + state.algorithm + ".jpg?update=" + Date.now());
         } else {
             // Redirect back to home if no data is present
             navigate("/");
@@ -57,7 +57,7 @@ const ResultView = () => {
                             <img
                                 src={url}
                                 alt="Result"
-                                className="w-full"
+                                className="w-full p-2"
                               />
                         </pre>
                     </div>
