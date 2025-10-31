@@ -57,7 +57,7 @@ const ResultView = () => {
                             <img
                                 src={url}
                                 alt="Result"
-                                className="w-full"
+                                className="w-full p-2"
                               />
                         </pre>
                     </div>

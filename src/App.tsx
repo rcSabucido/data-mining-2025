@@ -6,7 +6,7 @@ import ResultView from "./pages/ResultView"
 function App() {
 
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={'/' + import.meta.env.VITE_DEPLOYMENT_PREFIX}>
       <Routes>
         <Route path = "/" element={<Home />} />
         <Route path = "/algo-picker" element={<AlgoPicker />} />
